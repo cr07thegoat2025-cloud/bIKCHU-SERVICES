@@ -14,14 +14,14 @@ A small Vercel-hosted app studio website with a project request form, private ow
 
 1. Import this GitHub repository into Vercel.
 2. Keep the project root at the repository root.
-3. Add a Postgres database from the Vercel Marketplace and connect it to this project. The integration must provide the `POSTGRES_URL` connection variable used by `@vercel/postgres`.
+3. Install a Postgres database integration from the Vercel Marketplace (Neon is a straightforward choice) and connect it to this project. The code reads `POSTGRES_URL`, or `DATABASE_URL` as a fallback.
 4. In Vercel → Project → Settings → Environment Variables, add:
    - `ADMIN_PASSWORD` — a long, unique password for the owner dashboard.
    - `OPENROUTER_API_KEY` — your OpenRouter API key. Keep it only in Vercel environment variables; never paste it into this repository or public frontend.
-5. Redeploy after adding the variables.
+5. Redeploy after the database and environment variables are connected.
 6. Open the deployed site. Test a request, then open `/admin.html` and sign in with the admin password.
 
-If the Vercel Marketplace offers a Postgres provider with a different connection-variable name, configure its compatible connection string as `POSTGRES_URL` or adjust the database client before deploying.
+The app uses the supported Neon serverless Postgres driver rather than the retired `@vercel/postgres` package. Make sure your database integration provides either `POSTGRES_URL` or `DATABASE_URL`.
 
 ## Important first-release notes
 
