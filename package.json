@@ -6,9 +6,6 @@
   "scripts": {
     "dev": "vercel dev"
   },
-  "dependencies": {
-    "@neondatabase/serverless": "^1.0.2"
-  },
   "devDependencies": {
     "vercel": "^41.0.0"
   }
