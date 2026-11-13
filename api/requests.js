@@ -1,9 +1,15 @@
-import { sql } from "@vercel/postgres";
+import { neon } from "@neondatabase/serverless";
 import { randomUUID } from "node:crypto";
 
 const allowedPackages = new Set(["Basic", "Advanced", "Pro"]);
 
-async function ensureTable() {
+function getSql() {
+  const url = process.env.POSTGRES_URL || process.env.DATABASE_URL;
+  if (!url) throw new Error("Missing POSTGRES_URL (or DATABASE_URL) environment variable.");
+  return neon(url);
+}
+
+async function ensureTable(sql) {
   await sql`
     CREATE TABLE IF NOT EXISTS bikchu_requests (
       id TEXT PRIMARY KEY,
@@ -26,6 +32,7 @@ export default async function handler(req, res) {
   }
 
   try {
+    const sql = getSql();
     const { name, email, package: chosenPackage, idea, website } = req.body || {};
     // Honeypot field: real visitors leave this empty.
     if (website) return res.status(200).json({ ok: true });
@@ -42,7 +49,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "Tell us a little more about your app (15–5,000 characters)." });
     }
 
-    await ensureTable();
+    await ensureTable(sql);
     const id = randomUUID().slice(0, 8).toUpperCase();
     await sql`
       INSERT INTO bikchu_requests (id, name, email, package, idea)
