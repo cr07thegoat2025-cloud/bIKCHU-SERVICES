@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f0e7">
+  <meta name="description" content="BIKCHU Apps and Services — thoughtful apps, built around your idea.">
+  <title>BIKCHU — Apps & Services</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{--paper:#f5f0e7;--ink:#25251f;--muted:#77766c;--green:#b8d6a0;--orange:#f2a66d;--line:#ded8ca;--white:#fffdf8}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:Nunito,system-ui,sans-serif}
+    .wrap{width:min(1080px,calc(100% - 40px));margin:auto}.top{display:flex;align-items:center;justify-content:space-between;padding:24px 0;border-bottom:1px solid var(--line)}
+    .brand{font-weight:900;letter-spacing:-1px;font-size:22px}.brand span{display:inline-grid;place-items:center;background:var(--green);border:2px solid var(--ink);width:32px;height:32px;margin-right:8px;box-shadow:3px 3px 0 var(--ink);font-family:"DM Mono";font-size:14px}
+    nav{display:flex;gap:25px}nav a{color:var(--ink);text-decoration:none;font-weight:800;font-size:14px}.hero{padding:88px 0 76px;display:grid;grid-template-columns:1.2fr .8fr;gap:50px;align-items:center}
+    .eyebrow,.mono{font-family:"DM Mono",monospace;text-transform:uppercase;letter-spacing:1.5px;font-size:11px;color:var(--muted)}
+    h1{font-size:clamp(46px,7vw,82px);line-height:.98;letter-spacing:-4px;margin:18px 0 22px;font-weight:900}.hero p{font-size:18px;line-height:1.7;color:#646359;max-width:530px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;background:var(--ink);color:white;padding:14px 21px;text-decoration:none;border:2px solid var(--ink);font-weight:900;border-radius:7px;box-shadow:4px 4px 0 var(--orange);cursor:pointer;font:inherit;font-weight:900}
+    .art{min-height:310px;display:grid;place-items:center;position:relative}.pixel-card{width:250px;height:250px;background:var(--green);border:3px solid var(--ink);box-shadow:10px 10px 0 var(--ink);display:grid;place-items:center;transform:rotate(3deg);position:relative}
+    .pixel-card:before,.pixel-card:after{content:"";position:absolute;width:24px;height:24px;background:var(--orange);border:3px solid var(--ink)}.pixel-card:before{top:-17px;left:28px}.pixel-card:after{bottom:-17px;right:25px}
+    .pixel-face{font-size:100px;filter:grayscale(1);line-height:1}.spark{position:absolute;font-size:34px}.s1{top:12%;right:10%}.s2{bottom:8%;left:7%}
+    section{padding:65px 0;border-top:1px solid var(--line)}h2{font-size:clamp(30px,4vw,44px);letter-spacing:-1.8px;margin:10px 0 14px}.sub{color:var(--muted);line-height:1.7;max-width:600px}
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:30px}.card{background:var(--white);border:2px solid var(--ink);border-radius:9px;padding:24px;box-shadow:5px 5px 0 var(--line)}.card.featured{background:#e6efd9}.card h3{font-size:21px;margin:12px 0 4px}.price{font-size:34px;font-weight:900;letter-spacing:-1px;margin:15px 0}.card p,.card li{color:#6d6b60;line-height:1.6}.card ul{padding-left:19px;min-height:95px}.tag{font:11px "DM Mono";background:var(--paper);padding:6px 8px;border:1px solid var(--line);display:inline-block}
+    .formbox{background:var(--white);border:2px solid var(--ink);border-radius:10px;padding:clamp(20px,4vw,38px);box-shadow:7px 7px 0 var(--green);max-width:760px;margin-top:28px}
+    label{display:block;font-weight:900;margin:16px 0 7px}input,select,textarea{width:100%;padding:13px 14px;border:1.5px solid #c9c3b6;border-radius:6px;background:#fffefa;color:var(--ink);font:inherit}textarea{min-height:130px;resize:vertical}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.hint{font-size:12px;color:var(--muted);line-height:1.6}.status{margin-top:14px;font-weight:800}.hp{position:absolute;left:-10000px}
+    footer{padding:30px 0 45px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:20px;color:var(--muted);font-size:13px}
+    @media(max-width:720px){nav{gap:12px}nav a{font-size:12px}.hero{grid-template-columns:1fr;padding:58px 0}.art{min-height:240px}.pixel-card{width:190px;height:190px}.pixel-face{font-size:75px}.cards{grid-template-columns:1fr}.grid2{grid-template-columns:1fr}footer{flex-direction:column}}
+  </style>
+</head>
+<body>
+  <header class="wrap top">
+    <div class="brand"><span>B</span>BIKCHU</div>
+    <nav><a href="#services">Services</a><a href="#pricing">Pricing</a><a href="#request">Start a project</a></nav>
+  </header>
+  <main>
+    <div class="wrap hero">
+      <div><div class="eyebrow">Independent app studio · Built around your idea</div><h1>Small ideas.<br>Big possibilities.</h1><p>We turn your app idea into a clear plan and work with you to bring it to life. Tell us what you imagine — we’ll review it and get back to you with the next steps.</p><a class="btn" href="#request">Tell us your idea ↗</a></div>
+      <div class="art" aria-hidden="true"><span class="spark s1">✳</span><span class="spark s2">✦</span><div class="pixel-card"><div class="pixel-face">✿</div></div></div>
+    </div>
+    <section id="services"><div class="wrap"><div class="eyebrow">What we do</div><h2>Made with care, not complications.</h2><p class="sub">From a simple utility to a more ambitious app concept, we start by understanding what you need. Every project is reviewed before a final quote is agreed.</p>
+      <div class="cards">
+        <article class="card"><span class="tag">01 / PLAN</span><h3>Understand the idea</h3><p>We read your request, identify the main goal, and work out what the first version should include.</p></article>
+        <article class="card"><span class="tag">02 / BUILD</span><h3>Build the app</h3><p>Once the scope and price are agreed, development can begin with clear milestones.</p></article>
+        <article class="card"><span class="tag">03 / REVIEW</span><h3>Test and deliver</h3><p>We review the agreed features and share the finished work when it is ready.</p></article>
+      </div>
+    </div></section>
+    <section id="pricing"><div class="wrap"><div class="eyebrow">Simple starting prices</div><h2>Choose a starting point.</h2><p class="sub">These are starting prices, not guaranteed final quotes. The final price depends on features, platform, and complexity — we confirm it with you before any work starts.</p>
+      <div class="cards">
+        <article class="card"><span class="tag">STARTER</span><h3>Basic</h3><div class="price">$10<small style="font-size:13px;color:#777"> / from</small></div><ul><li>Simple, focused app idea</li><li>Core features only</li><li>Best for small projects</li></ul><a class="btn" href="#request" data-package="Basic">Request Basic</a></article>
+        <article class="card featured"><span class="tag">POPULAR START</span><h3>Advanced</h3><div class="price">$30<small style="font-size:13px;color:#777"> / from</small></div><ul><li>More screens and features</li><li>More custom interactions</li><li>Scope reviewed first</li></ul><a class="btn" href="#request" data-package="Advanced">Request Advanced</a></article>
+        <article class="card"><span class="tag">FULLER PROJECT</span><h3>Pro</h3><div class="price">$50<small style="font-size:13px;color:#777"> / from</small></div><ul><li>Larger agreed feature set</li><li>More involved design</li><li>Custom quote after review</li></ul><a class="btn" href="#request" data-package="Pro">Request Pro</a></article>
+      </div>
+    </div></section>
+    <section id="request"><div class="wrap"><div class="eyebrow">Your turn</div><h2>Let’s hear your idea.</h2><p class="sub">Send a project request. We’ll review it and contact you to confirm the scope and price. Submitting a request does not create a contract or start paid work.</p>
+      <form class="formbox" id="requestForm">
+        <div class="grid2"><div><label for="name">Your name</label><input id="name" name="name" required minlength="2" maxlength="80" autocomplete="name" placeholder="Alex"></div><div><label for="email">Email address</label><input id="email" name="email" type="email" required maxlength="254" autocomplete="email" placeholder="you@example.com"></div></div>
+        <label for="package">Which package looks closest?</label><select id="package" name="package" required><option value="">Choose a starting point</option><option>Basic</option><option>Advanced</option><option>Pro</option></select>
+        <label for="idea">Describe your app idea</label><textarea id="idea" name="idea" required minlength="15" maxlength="5000" placeholder="What should the app do? Who is it for? Which features matter most?"></textarea>
+        <div class="hp" aria-hidden="true"><label for="website">Leave this field empty</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
+        <p class="hint">Please don’t include passwords, payment details, or sensitive personal information. Your details are used only to review and respond to this request.</p>
+        <button class="btn" id="sendBtn" type="submit">Send project request ↗</button><div class="status" id="status" role="status" aria-live="polite"></div>
+      </form>
+    </div></section>
+  </main>
+  <footer class="wrap"><span>© <span id="year"></span> BIKCHU Apps and Services</span><span>Thoughtful apps, one idea at a time.</span><a href="/admin.html" style="color:inherit">Owner login</a></footer>
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+    document.querySelectorAll("[data-package]").forEach(link => link.addEventListener("click", () => { document.getElementById("package").value = link.dataset.package; }));
+    const form = document.getElementById("requestForm");
+    form.addEventListener("submit", async event => {
+      event.preventDefault();
+      const button = document.getElementById("sendBtn");
+      const status = document.getElementById("status");
+      button.disabled = true; button.textContent = "Sending…"; status.textContent = "";
+      const payload = Object.fromEntries(new FormData(form).entries());
+      try {
+        const response = await fetch("/api/requests", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(payload) });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || "Could not send your request.");
+        status.textContent = data.reference ? "Request received! Your reference is " + data.reference + ". We’ll review it and get back to you." : "Request received!";
+        form.reset();
+      } catch (error) { status.textContent = error.message || "Something went wrong. Please try again."; }
+      finally { button.disabled = false; button.textContent = "Send project request ↗"; }
+    });
+  </script>
+</body>
+</html>
