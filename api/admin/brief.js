@@ -1,5 +1,11 @@
-import { sql } from "@vercel/postgres";
+import { neon } from "@neondatabase/serverless";
 import { timingSafeEqual } from "node:crypto";
+
+function getSql() {
+  const url = process.env.POSTGRES_URL || process.env.DATABASE_URL;
+  if (!url) throw new Error("Missing POSTGRES_URL (or DATABASE_URL) environment variable.");
+  return neon(url);
+}
 
 function authorized(req) {
   const expected = process.env.ADMIN_PASSWORD || "";
@@ -20,11 +26,12 @@ export default async function handler(req, res) {
   if (!process.env.OPENROUTER_API_KEY) return res.status(503).json({ error: "Add OPENROUTER_API_KEY in Vercel environment variables first." });
 
   try {
+    const sql = getSql();
     const { id } = req.body || {};
     if (typeof id !== "string" || id.length > 20) return res.status(400).json({ error: "Invalid request reference." });
     const found = await sql`SELECT id, name, package, idea FROM bikchu_requests WHERE id = ${id} LIMIT 1`;
-    if (!found.rows.length) return res.status(404).json({ error: "Request not found." });
-    const item = found.rows[0];
+    if (!found.length) return res.status(404).json({ error: "Request not found." });
+    const item = found[0];
 
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
