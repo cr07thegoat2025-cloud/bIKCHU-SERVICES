@@ -1,43 +1,32 @@
 # BIKCHU Apps and Services
 
-A small Vercel-hosted app studio website with a project request form, private owner dashboard, Postgres storage, and an owner-triggered OpenRouter project brief generator.
+A Vercel-hosted app studio website. Project requests are emailed to the owner through Resend; no database is required.
 
 ## Files
 
-- `index.html` — public landing page, starting-price cards, and project request form
-- `admin.html` — private owner dashboard (visit `/admin.html`)
-- `api/requests.js` — validates and stores client requests
-- `api/admin/requests.js` — password-protected request list
-- `api/admin/brief.js` — owner-triggered AI brief generator
+- `index.html` — public landing page and project request form
+- `admin.html` — owner information page
+- `api/requests.js` — validates submissions and emails them through Resend
+- `vercel.json` — Vercel serverless function configuration
 
-## Deploy to Vercel
+## Configure email
 
-1. Import this GitHub repository into Vercel.
-2. Keep the project root at the repository root.
-3. Install a Postgres database integration from the Vercel Marketplace (Neon is a straightforward choice) and connect it to this project. The code reads `POSTGRES_URL`, or `DATABASE_URL` as a fallback.
-4. In Vercel → Project → Settings → Environment Variables, add:
-   - `ADMIN_PASSWORD` — a long, unique password for the owner dashboard.
-   - `OPENROUTER_API_KEY` — your OpenRouter API key. Keep it only in Vercel environment variables; never paste it into this repository or public frontend.
-5. Redeploy after the database and environment variables are connected.
-6. Open the deployed site. Test a request, then open `/admin.html` and sign in with the admin password.
+1. Create a Resend account at https://resend.com using the owner's inbox: `cr07thegoat2025@gmail.com`.
+2. Create an API key with permission to send emails.
+3. In Vercel → Project → Settings → Environment Variables, add:
+   - `RESEND_API_KEY` — the secret API key from Resend.
+   - Optional: `RESEND_FROM_EMAIL` — leave unset initially to use `BIKCHU <onboarding@resend.dev>`.
+4. Redeploy the Vercel project.
+5. Submit a test request and check the owner's inbox and spam folder.
 
-The app uses the supported Neon serverless Postgres driver rather than the retired `@vercel/postgres` package. Make sure your database integration provides either `POSTGRES_URL` or `DATABASE_URL`.
+**Important testing limitation:** Resend's shared `onboarding@resend.dev` sender is for testing and can only send to the email address registered with your Resend account. Sign up to Resend with `cr07thegoat2025@gmail.com` to test delivery to this inbox. To send using a custom branded sender or to other recipients, verify a domain in Resend and set `RESEND_FROM_EMAIL` to an address on that verified domain.
 
-## Important first-release notes
+## How requests work
 
-- The public form stores requests; it does not automatically email clients.
-- AI brief generation is manually triggered by the owner. It produces a draft, not a finished app, tested code, or an automatically approved quote.
-- Starting prices ($10 / $30 / $50) are indicative. Confirm scope, delivery expectations, and final price with the client before accepting paid work.
-- The dashboard uses a shared admin password and does not yet have user accounts, session cookies, rate limiting, or a full audit log. Before advertising this publicly or storing real client data, add stronger authentication, abuse protection, backups, and a clear privacy notice. Have a parent/guardian supervise client communications, payments, and account administration.
-- Do not collect passwords, payment-card data, or sensitive personal information through the project form.
+- The form validates the client's name, email, selected package, and app idea.
+- The Vercel serverless function sends a notification email to `cr07thegoat2025@gmail.com`.
+- The client's email is set as Reply-To, so the owner can reply directly.
+- Requests are **not stored in a database**. Keep the notification emails as the record.
+- If email setup is missing or sending fails, the form displays an error rather than pretending the request was received.
 
-## Local development
-
-Install Node.js, then run:
-
-```bash
-npm install
-npx vercel dev
-```
-
-Set the environment variables and connect a Postgres database before testing API routes.
+Starting prices ($10 / $30 / $50) are indicative. Confirm project scope, delivery expectations, and final price before accepting paid work. Have a parent/guardian supervise client communications, payments, and account administration. Do not collect passwords, payment-card data, or sensitive personal information through the form.
