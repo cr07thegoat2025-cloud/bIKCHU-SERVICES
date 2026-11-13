@@ -1,18 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#f5f0e7">
-<title>BIKCHU · Owner information</title>
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#f5f0e7"><title>BIKCHU · Admin</title>
 <style>
-body{margin:0;background:#f5f0e7;color:#25251f;font:16px system-ui,sans-serif;min-height:100vh;display:grid;place-items:center;padding:20px;box-sizing:border-box}
-main{max-width:560px;background:#fffdf8;border:2px solid #25251f;border-radius:12px;padding:30px;box-shadow:7px 7px 0 #b8d6a0}
-h1{margin-top:0}p{line-height:1.7;color:#666}a{color:#25251f;font-weight:700}
-</style></head>
-<body><main>
-<p><strong>BIKCHU APPS AND SERVICES · OWNER</strong></p>
-<h1>Project requests arrive by email</h1>
-<p>The email-based request system is enabled. New project submissions are sent to the owner's inbox at <strong>cr07thegoat2025@gmail.com</strong>.</p>
-<p>This version does not use a database or store a request history in an online dashboard. Keep your notification emails so you have a record of each request.</p>
-<p><a href="/">← Back to BIKCHU</a></p>
-</main></body></html>
+:root{--paper:#f5f0e7;--ink:#25251f;--muted:#77766c;--green:#b8d6a0;--orange:#f2a66d;--line:#ded8ca;--white:#fffdf8}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px system-ui,sans-serif}.wrap{width:min(1100px,calc(100% - 32px));margin:auto}.top{display:flex;justify-content:space-between;align-items:center;padding:22px 0;border-bottom:1px solid var(--line)}h1{font-size:30px;margin:24px 0 4px}.muted{color:var(--muted)}.panel{background:var(--white);border:2px solid var(--ink);border-radius:10px;padding:22px;margin:22px 0;box-shadow:5px 5px 0 var(--line)}input,button,select,textarea{font:inherit;padding:11px;border:1px solid #c9c3b6;border-radius:6px}input,textarea{width:100%;margin:8px 0 14px}button{background:var(--ink);color:white;border:2px solid var(--ink);font-weight:800;cursor:pointer}button:disabled{opacity:.5}.hidden{display:none!important}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.stat{background:#e6efd9;padding:16px;border:1px solid var(--line);border-radius:8px}.stat b{display:block;font-size:26px}.request{border-top:1px solid var(--line);padding:16px 0}.request h3{margin:0 0 6px}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.row select{max-width:180px}.request p{white-space:pre-wrap;line-height:1.5}.small{font-size:12px}.danger{color:#a33}.brief{background:#f5f0e7;padding:14px;border-radius:7px;white-space:pre-wrap}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}@media(max-width:650px){.stats{grid-template-columns:repeat(2,1fr)}}
+</style></head><body><div class="wrap"><header class="top"><b>▣ BIKCHU / OWNER</b><a href="/" style="color:inherit">View website ↗</a></header>
+<section id="login" class="panel" style="max-width:430px;margin:70px auto"><h1>Owner login</h1><p class="muted">Private project request dashboard.</p><form id="loginForm"><label for="password">Admin password</label><input id="password" type="password" required autocomplete="current-password"><button>Sign in →</button></form><p id="loginMsg" class="muted"></p></section>
+<main id="app" class="hidden"><div class="toolbar"><div><h1>Project requests</h1><p class="muted">Review submissions, update progress and prepare AI-assisted briefs.</p></div><button id="logout">Sign out</button></div>
+<div class="stats"><div class="stat"><span class="muted">Total</span><b id="total">0</b></div><div class="stat"><span class="muted">New</span><b id="newCount">0</b></div><div class="stat"><span class="muted">In progress</span><b id="progress">0</b></div><div class="stat"><span class="muted">Completed</span><b id="completed">0</b></div></div>
+<div class="panel"><div class="toolbar"><h2>Inbox</h2><button id="refresh">Refresh ↻</button></div><p id="loadMsg" class="muted"></p><div id="requests"></div></div></main></div>
+<script>
+const $=id=>document.getElementById(id);let items=[];
+async function api(url,options={}){const r=await fetch(url,{...options,headers:{'Content-Type':'application/json',...(options.headers||{})}});const d=await r.json().catch(()=>({}));if(!r.ok)throw Error(d.error||'Request failed');return d}
+function showApp(on){$('login').classList.toggle('hidden',on);$('app').classList.toggle('hidden',!on)}
+async function load(){ $('loadMsg').textContent='Loading…';try{const d=await api('/api/admin/requests');items=d.requests||[];$('total').textContent=items.length;$('newCount').textContent=items.filter(x=>x.status==='New').length;$('progress').textContent=items.filter(x=>x.status==='In Progress').length;$('completed').textContent=items.filter(x=>x.status==='Completed').length;$('requests').innerHTML=items.length?items.map(x=>`<article class="request"><div class="toolbar"><div><h3>${esc(x.name)} · ${esc(x.package)}</h3><span class="muted small">${esc(x.reference)} · ${new Date(x.created_at).toLocaleString()}</span></div><select data-status="${x.id}">${['New','Reviewing','Approved','In Progress','Completed','Declined'].map(s=>`<option ${x.status===s?'selected':''}>${s}</option>`).join('')}</select></div><p><b>Email:</b> <a href="mailto:${encodeURIComponent(x.email)}">${esc(x.email)}</a></p><p>${esc(x.idea)}</p><div class="row"><button data-brief="${x.id}">Generate AI brief & quote ✦</button></div>${x.ai_brief?`<h4>AI project brief</h4><div class="brief">${esc(x.ai_brief)}</div>`:''}${x.ai_quote?`<p><b>Draft quote:</b> ${esc(x.ai_quote)}</p>`:''}</article>`).join(''):'<p class="muted">No requests yet. New client submissions will appear here.</p>';$('loadMsg').textContent='';}catch(e){$('loadMsg').textContent=e.message;}}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+$('loginForm').addEventListener('submit',async e=>{e.preventDefault();$('loginMsg').textContent='Signing in…';try{await api('/api/admin/login',{method:'POST',body:JSON.stringify({password:$('password').value})});showApp(true);await load()}catch(err){$('loginMsg').textContent=err.message}});
+$('logout').onclick=async()=>{try{await api('/api/admin/login',{method:'DELETE'})}finally{showApp(false)}};
+$('refresh').onclick=load;
+$('requests').addEventListener('change',async e=>{if(!e.target.dataset.status)return;try{await api('/api/admin/requests',{method:'PATCH',body:JSON.stringify({id:e.target.dataset.status,status:e.target.value})});await load()}catch(err){alert(err.message)}});
+$('requests').addEventListener('click',async e=>{const id=e.target.dataset.brief;if(!id)return;e.target.disabled=true;e.target.textContent='Thinking…';try{await api('/api/admin/brief',{method:'POST',body:JSON.stringify({id})});await load()}catch(err){alert(err.message)}finally{e.target.disabled=false}});
+(async()=>{try{await api('/api/admin/requests');showApp(true);await load()}catch{showApp(false)}})();
+</script></body></html>
